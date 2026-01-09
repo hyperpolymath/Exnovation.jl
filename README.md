@@ -99,6 +99,23 @@ scores = portfolio_scores([item])
 allocation = allocate_budget([item]; capex_budget=120.0)
 ```
 
+## API Snapshot
+
+```julia
+BarrierType, Cognitive, Emotional, Behavioral, Structural, Political
+FailureType, Preventable, Unavoidable, Intelligent
+ExnovationItem, Driver, Barrier, DecisionCriteria
+ExnovationAssessment, ExnovationSummary
+IntelligentFailureCriteria, FailureAssessment, FailureSummary
+RiskGovernance, ExnovationCase, DecisionReport
+ImpactModel, PortfolioItem, StageGate
+sunk_cost_bias_index, exnovation_score, recommendation
+debiasing_actions, intelligent_failure_score, failure_summary
+decision_pipeline, write_report_json
+barrier_templates, run_stage_gates
+portfolio_scores, allocate_budget
+```
+
 ## Conceptual Alignment
 
 The model is aligned with ideas from the Holbek & Knudsen manuscript on
