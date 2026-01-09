@@ -1,12 +1,16 @@
 module Exnovation
 
+using JSON3
+
 export BarrierType, Cognitive, Emotional, Behavioral, Structural
 export FailureType, Preventable, Unavoidable, Intelligent
 export ExnovationItem, Driver, Barrier, DecisionCriteria
 export ExnovationAssessment, ExnovationSummary
 export IntelligentFailureCriteria, FailureAssessment, FailureSummary
+export RiskGovernance, ExnovationCase, DecisionReport
 export sunk_cost_bias_index, exnovation_score, recommendation
 export debiasing_actions, intelligent_failure_score, failure_summary
+export decision_pipeline, write_report_json
 
 @enum BarrierType Cognitive Emotional Behavioral Structural
 @enum FailureType Preventable Unavoidable Intelligent
@@ -106,6 +110,35 @@ struct FailureSummary
     risk_governance::Float64
     learning_practice::Float64
     failure_type::FailureType
+end
+
+"""
+Risk governance profile (0..1 values).
+"""
+struct RiskGovernance
+    appetite::Float64
+    uncertainty::Float64
+    mode::Symbol
+end
+
+"""
+Complete case for decision-making.
+"""
+struct ExnovationCase
+    assessment::ExnovationAssessment
+    failure::Union{FailureAssessment, Nothing}
+    risk_governance::RiskGovernance
+end
+
+"""
+Decision report with summaries and recommendation.
+"""
+struct DecisionReport
+    exnovation::ExnovationSummary
+    failure::Union{FailureSummary, Nothing}
+    risk_governance::RiskGovernance
+    recommendation::Symbol
+    notes::Vector{String}
 end
 
 function _clamp01(x::Float64)
@@ -212,6 +245,60 @@ function failure_summary(assessment::FailureAssessment)
         _clamp01(assessment.learning_practice),
         assessment.failure_type,
     )
+end
+
+"""
+Run a decision pipeline over an exnovation case.
+"""
+function decision_pipeline(case::ExnovationCase)
+    ex_summary = exnovation_score(case.assessment)
+    fail_summary = case.failure === nothing ? nothing : failure_summary(case.failure)
+    notes = String[]
+
+    if ex_summary.sunk_cost_bias > 0.6
+        push!(notes, "High sunk-cost bias detected; apply debiasing actions.")
+    end
+    if case.risk_governance.mode == :minimize && case.risk_governance.uncertainty > 0.6
+        push!(notes, "High uncertainty with risk-minimization mode; consider risk governance or pilot.")
+    end
+    if fail_summary !== nothing && fail_summary.intelligent_failure_score < 0.5
+        push!(notes, "Experiment setup is weak; improve intelligent failure criteria.")
+    end
+
+    DecisionReport(ex_summary, fail_summary, case.risk_governance, recommendation(case.assessment), notes)
+end
+
+"""
+Write a decision report to JSON.
+"""
+function write_report_json(path::AbstractString, report::DecisionReport)
+    obj = Dict{String, Any}()
+    obj["recommendation"] = String(report.recommendation)
+    obj["notes"] = report.notes
+    obj["risk_governance"] = Dict(
+        "appetite" => report.risk_governance.appetite,
+        "uncertainty" => report.risk_governance.uncertainty,
+        "mode" => String(report.risk_governance.mode),
+    )
+    obj["exnovation"] = Dict(
+        "driver_score" => report.exnovation.driver_score,
+        "barrier_score" => report.exnovation.barrier_score,
+        "criteria_score" => report.exnovation.criteria_score,
+        "total_score" => report.exnovation.total_score,
+        "sunk_cost_bias" => report.exnovation.sunk_cost_bias,
+    )
+    if report.failure !== nothing
+        obj["failure"] = Dict(
+            "intelligent_failure_score" => report.failure.intelligent_failure_score,
+            "risk_governance" => report.failure.risk_governance,
+            "learning_practice" => report.failure.learning_practice,
+            "failure_type" => String(Symbol(report.failure.failure_type)),
+        )
+    end
+    open(path, "w") do io
+        JSON3.write(io, obj)
+    end
+    nothing
 end
 
 end # module

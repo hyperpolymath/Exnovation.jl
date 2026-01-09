@@ -46,4 +46,16 @@ using Exnovation
     fsummary = failure_summary(failure)
     @test fsummary.intelligent_failure_score > 0.0
     @test fsummary.failure_type == Intelligent
+
+    case = ExnovationCase(
+        assessment,
+        failure,
+        RiskGovernance(0.5, 0.7, :govern),
+    )
+    report = decision_pipeline(case)
+    @test report.recommendation in (:exnovate, :pilot, :defer)
+    path = joinpath(@__DIR__, "report.json")
+    write_report_json(path, report)
+    @test isfile(path)
+    rm(path, force=true)
 end

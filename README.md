@@ -76,6 +76,18 @@ summary = failure_summary(failure)
 println(summary.intelligent_failure_score)
 ```
 
+```julia
+# Decision pipeline and JSON report
+case = ExnovationCase(
+    assessment,
+    failure,
+    RiskGovernance(0.5, 0.7, :govern),
+)
+
+report = decision_pipeline(case)
+write_report_json("exnovation_report.json", report)
+```
+
 ## Conceptual Alignment
 
 The model is aligned with ideas from the Holbek & Knudsen manuscript on
