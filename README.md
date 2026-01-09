@@ -16,6 +16,8 @@ and simple scoring helpers so you can encode your own organizational context.
 - **Drivers**: forces pushing toward exnovation (e.g., regulatory pressure,
   obsolete technology, sustainability targets).
 - **Barriers**: cognitive, emotional, behavioral, or structural resistance.
+- **Intelligent failure**: planned experimentation with bounded risk and
+  deliberate learning checkpoints.
 - **Decision criteria**: weighted factors such as sunk cost bias, strategic fit,
   performance, and risk.
 - **Debiasing actions**: prompts to counter sunk-cost and status-quo effects.
@@ -57,15 +59,32 @@ println(score)
 println(recommendation(assessment))
 ```
 
+```julia
+# Intelligent failure readiness
+criteria = IntelligentFailureCriteria(
+    0.9,  # planned_action
+    0.7,  # outcome_uncertainty
+    0.8,  # modest_scale
+    0.9,  # rapid_response
+    0.8,  # familiar_context
+    0.7,  # explicit_assumptions
+    0.8,  # checkpoint_learning
+)
+
+failure = FailureAssessment(Intelligent, criteria, 0.6, 0.7)
+summary = failure_summary(failure)
+println(summary.intelligent_failure_score)
+```
+
 ## Conceptual Alignment
 
 The model is aligned with ideas from the Holbek & Knudsen manuscript on
 exnovation: exnovation as making space for innovation, the role of sunk-cost
 bias, and the impact of cognitive, emotional, and behavioral barriers.
 
-The TandF paper you referenced was not retrievable due to access controls.
-If you provide a summary or permitted excerpt, I can integrate its specific
-framework elements into the model and documentation.
+It also integrates the Hartley & Knell article on innovation, intelligent
+failure, and exnovation by modeling intelligent failure criteria and making
+them explicit in the decision flow.
 
 ## Development
 

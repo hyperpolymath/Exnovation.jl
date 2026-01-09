@@ -40,4 +40,10 @@ using Exnovation
 
     actions = debiasing_actions(barriers)
     @test !isempty(actions)
+
+    criteria = IntelligentFailureCriteria(0.9, 0.7, 0.8, 0.9, 0.8, 0.7, 0.8)
+    failure = FailureAssessment(Intelligent, criteria, 0.6, 0.7)
+    fsummary = failure_summary(failure)
+    @test fsummary.intelligent_failure_score > 0.0
+    @test fsummary.failure_type == Intelligent
 end

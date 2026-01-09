@@ -1,12 +1,15 @@
 module Exnovation
 
 export BarrierType, Cognitive, Emotional, Behavioral, Structural
+export FailureType, Preventable, Unavoidable, Intelligent
 export ExnovationItem, Driver, Barrier, DecisionCriteria
 export ExnovationAssessment, ExnovationSummary
+export IntelligentFailureCriteria, FailureAssessment, FailureSummary
 export sunk_cost_bias_index, exnovation_score, recommendation
-export debiasing_actions
+export debiasing_actions, intelligent_failure_score, failure_summary
 
 @enum BarrierType Cognitive Emotional Behavioral Structural
+@enum FailureType Preventable Unavoidable Intelligent
 
 """
 Represents a practice, product, or routine considered for phase-out.
@@ -70,6 +73,39 @@ struct ExnovationSummary
     criteria_score::Float64
     total_score::Float64
     sunk_cost_bias::Float64
+end
+
+"""
+Criteria for intelligent failure: values are expected in 0..1.
+"""
+struct IntelligentFailureCriteria
+    planned_action::Float64
+    outcome_uncertainty::Float64
+    modest_scale::Float64
+    rapid_response::Float64
+    familiar_context::Float64
+    explicit_assumptions::Float64
+    checkpoint_learning::Float64
+end
+
+"""
+Assessment of a failure or experiment context.
+"""
+struct FailureAssessment
+    failure_type::FailureType
+    criteria::IntelligentFailureCriteria
+    risk_governance::Float64
+    learning_practice::Float64
+end
+
+"""
+Summary of intelligent failure readiness.
+"""
+struct FailureSummary
+    intelligent_failure_score::Float64
+    risk_governance::Float64
+    learning_practice::Float64
+    failure_type::FailureType
 end
 
 function _clamp01(x::Float64)
@@ -148,6 +184,34 @@ function debiasing_actions(barriers::Vector{Barrier})
         end
     end
     unique(actions)
+end
+
+"""
+Compute an intelligent failure score (0..1) from criteria.
+"""
+function intelligent_failure_score(criteria::IntelligentFailureCriteria)
+    values = (
+        criteria.planned_action,
+        criteria.outcome_uncertainty,
+        criteria.modest_scale,
+        criteria.rapid_response,
+        criteria.familiar_context,
+        criteria.explicit_assumptions,
+        criteria.checkpoint_learning,
+    )
+    sum(_clamp01(v) for v in values) / length(values)
+end
+
+"""
+Return a structured summary for failure assessment.
+"""
+function failure_summary(assessment::FailureAssessment)
+    FailureSummary(
+        intelligent_failure_score(assessment.criteria),
+        _clamp01(assessment.risk_governance),
+        _clamp01(assessment.learning_practice),
+        assessment.failure_type,
+    )
 end
 
 end # module
