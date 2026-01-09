@@ -2,17 +2,20 @@ module Exnovation
 
 using JSON3
 
-export BarrierType, Cognitive, Emotional, Behavioral, Structural
+export BarrierType, Cognitive, Emotional, Behavioral, Structural, Political
 export FailureType, Preventable, Unavoidable, Intelligent
 export ExnovationItem, Driver, Barrier, DecisionCriteria
 export ExnovationAssessment, ExnovationSummary
 export IntelligentFailureCriteria, FailureAssessment, FailureSummary
 export RiskGovernance, ExnovationCase, DecisionReport
+export ImpactModel, PortfolioItem, StageGate
 export sunk_cost_bias_index, exnovation_score, recommendation
 export debiasing_actions, intelligent_failure_score, failure_summary
 export decision_pipeline, write_report_json
+export barrier_templates, run_stage_gates
+export portfolio_scores, allocate_budget
 
-@enum BarrierType Cognitive Emotional Behavioral Structural
+@enum BarrierType Cognitive Emotional Behavioral Structural Political
 @enum FailureType Preventable Unavoidable Intelligent
 
 """
@@ -139,6 +142,31 @@ struct DecisionReport
     risk_governance::RiskGovernance
     recommendation::Symbol
     notes::Vector{String}
+end
+
+"""
+Impact model for exnovation: capex/opex savings and public value score.
+"""
+struct ImpactModel
+    capex::Float64
+    opex::Float64
+    public_value::Float64
+end
+
+"""
+Portfolio item ties an exnovation case to its impact.
+"""
+struct PortfolioItem
+    case::ExnovationCase
+    impact::ImpactModel
+end
+
+"""
+Stage-gate checkpoint with a required total score threshold.
+"""
+struct StageGate
+    name::Symbol
+    threshold::Float64
 end
 
 function _clamp01(x::Float64)
@@ -299,6 +327,62 @@ function write_report_json(path::AbstractString, report::DecisionReport)
         JSON3.write(io, obj)
     end
     nothing
+end
+
+"""
+Barrier taxonomy templates by type.
+"""
+function barrier_templates()
+    Dict(
+        :cognitive => [Barrier(Cognitive, 0.4, "Sunk-cost framing"), Barrier(Cognitive, 0.3, "Status quo bias")],
+        :emotional => [Barrier(Emotional, 0.4, "Identity attachment"), Barrier(Emotional, 0.2, "Loss aversion")],
+        :behavioral => [Barrier(Behavioral, 0.3, "Habitual routines"), Barrier(Behavioral, 0.2, "Workflow inertia")],
+        :structural => [Barrier(Structural, 0.3, "Incentive misalignment"), Barrier(Structural, 0.2, "Legacy contracts")],
+        :political => [Barrier(Political, 0.4, "Stakeholder resistance"), Barrier(Political, 0.3, "Reputational risk")],
+    )
+end
+
+"""
+Run stage-gate checks against an assessment's total score.
+"""
+function run_stage_gates(assessment::ExnovationAssessment, gates::Vector{StageGate})
+    score = exnovation_score(assessment).total_score
+    results = Dict{Symbol, Bool}()
+    for gate in gates
+        results[gate.name] = score >= gate.threshold
+    end
+    results
+end
+
+"""
+Compute portfolio scores for prioritization.
+"""
+function portfolio_scores(items::Vector{PortfolioItem})
+    results = Vector{Tuple{Symbol, Float64, Float64}}()
+    for item in items
+        summary = exnovation_score(item.case.assessment)
+        impact_score = item.impact.public_value - item.impact.capex - item.impact.opex
+        push!(results, (item.case.assessment.item.name, summary.total_score, impact_score))
+    end
+    sort!(results, by=x -> x[2] + x[3], rev=true)
+    results
+end
+
+"""
+Allocate a capex budget to top-ranked portfolio items.
+"""
+function allocate_budget(items::Vector{PortfolioItem}; capex_budget::Float64)
+    ranked = portfolio_scores(items)
+    chosen = Symbol[]
+    remaining = capex_budget
+    for (name, _, _) in ranked
+        item = first(filter(i -> i.case.assessment.item.name == name, items))
+        if item.impact.capex <= remaining
+            push!(chosen, name)
+            remaining -= item.impact.capex
+        end
+    end
+    chosen
 end
 
 end # module

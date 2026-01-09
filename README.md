@@ -21,6 +21,8 @@ and simple scoring helpers so you can encode your own organizational context.
 - **Decision criteria**: weighted factors such as sunk cost bias, strategic fit,
   performance, and risk.
 - **Debiasing actions**: prompts to counter sunk-cost and status-quo effects.
+- **Stage-gates**: thresholds that stop or advance exnovation decisions.
+- **Impact model**: capex/opex savings plus public value.
 
 ## Quick Start
 
@@ -86,6 +88,15 @@ case = ExnovationCase(
 
 report = decision_pipeline(case)
 write_report_json("exnovation_report.json", report)
+```
+
+```julia
+# Portfolio scoring and budget allocation
+impact = ImpactModel(100.0, 50.0, 0.9)
+item = PortfolioItem(case, impact)
+
+scores = portfolio_scores([item])
+allocation = allocate_budget([item]; capex_budget=120.0)
 ```
 
 ## Conceptual Alignment

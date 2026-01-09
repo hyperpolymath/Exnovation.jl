@@ -58,4 +58,19 @@ using Exnovation
     write_report_json(path, report)
     @test isfile(path)
     rm(path, force=true)
+
+    templates = barrier_templates()
+    @test haskey(templates, :political)
+
+    gates = [StageGate(:screen, 0.2), StageGate(:commit, 0.8)]
+    gate_results = run_stage_gates(assessment, gates)
+    @test haskey(gate_results, :screen)
+
+    impact = ImpactModel(100.0, 50.0, 0.9)
+    item = PortfolioItem(case, impact)
+    scores = portfolio_scores([item])
+    @test length(scores) == 1
+
+    allocation = allocate_budget([item]; capex_budget=120.0)
+    @test allocation == [:Legacy]
 end
