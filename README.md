@@ -1,4 +1,9 @@
+[![License](https://img.shields.io/badge/license-PMPL--1.0-blue.svg)](https://github.com/hyperpolymath/palimpsest-license)
+
 # Exnovation.jl
+
+
+
 
 Exnovation.jl is a Julia framework for modeling exnovation decisions: phasing
 out legacy practices, products, or routines to make room for new innovation.
