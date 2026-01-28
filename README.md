@@ -14,6 +14,20 @@ way.
 This package does **not** embed proprietary content; it provides a clean model
 and simple scoring helpers so you can encode your own organizational context.
 
+## Installation
+
+### From Julia REPL
+```julia
+using Pkg
+Pkg.add("Exnovation")
+```
+
+### From Git (Development)
+```julia
+using Pkg
+Pkg.add(url="https://github.com/hyperpolymath/Exnovation.jl")
+```
+
 ## Core Concepts
 
 - **Exnovation item**: a practice, product, or routine being considered for
