@@ -183,11 +183,11 @@ function sunk_cost_bias_index(sunk_cost::Float64, forward_value::Float64)
 end
 
 function _driver_score(drivers::Vector{Driver})
-    sum(_clamp01(d.weight) for d in drivers)
+    sum(_clamp01(d.weight) for d in drivers; init=0.0)
 end
 
 function _barrier_score(barriers::Vector{Barrier})
-    sum(_clamp01(b.weight) for b in barriers)
+    sum(_clamp01(b.weight) for b in barriers; init=0.0)
 end
 
 function _criteria_score(a::ExnovationAssessment)
