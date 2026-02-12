@@ -43,7 +43,7 @@ jobs:
           tar -czf dist/Exnovation.jl-${{ matrix.os }}.tar.gz src/ Project.toml README.* LICENSE
 
       - name: Upload artifacts
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v4 # TODO: Pin to SHA once v4 SHA verified
         with:
           name: package-${{ matrix.os }}
           path: dist/
@@ -91,7 +91,7 @@ jobs:
           '
 
       - name: Upload SBOM
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v4 # TODO: Pin to SHA once v4 SHA verified
         with:
           name: sbom
           path: sbom.json
@@ -105,7 +105,7 @@ jobs:
       - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
 
       - name: Download artifacts
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v4 # TODO: Pin to SHA once v4 SHA verified
         with:
           path: release-artifacts/
 
