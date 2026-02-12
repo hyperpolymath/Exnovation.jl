@@ -178,6 +178,9 @@ end
 Approximate sunk-cost bias index based on past vs forward value.
 """
 function sunk_cost_bias_index(sunk_cost::Float64, forward_value::Float64)
+    sunk_cost >= 0.0 || throw(ArgumentError("sunk_cost must be non-negative, got $sunk_cost"))
+    forward_value >= 0.0 || throw(ArgumentError("forward_value must be non-negative, got $forward_value"))
+
     total = max(sunk_cost + forward_value, 0.0)
     total == 0.0 ? 0.0 : _clamp01(sunk_cost / total)
 end
@@ -232,6 +235,8 @@ end
 Suggest debiasing actions based on barrier types.
 """
 function debiasing_actions(barriers::Vector{Barrier})
+    isempty(barriers) && throw(ArgumentError("barriers vector cannot be empty"))
+
     actions = String[]
     for barrier in barriers
         if barrier.kind == Cognitive
@@ -264,6 +269,12 @@ function intelligent_failure_score(criteria::IntelligentFailureCriteria)
         criteria.explicit_assumptions,
         criteria.checkpoint_learning,
     )
+
+    # Validate all criteria are in [0,1]
+    for (i, v) in enumerate(values)
+        0.0 <= v <= 1.0 || throw(ArgumentError("Criteria value $i must be in [0,1], got $v"))
+    end
+
     sum(_clamp01(v) for v in values) / length(values)
 end
 
@@ -304,6 +315,8 @@ end
 Write a decision report to JSON.
 """
 function write_report_json(path::AbstractString, report::DecisionReport)
+    isempty(path) && throw(ArgumentError("path cannot be empty"))
+
     obj = Dict{String, Any}()
     obj["recommendation"] = String(report.recommendation)
     obj["notes"] = report.notes
@@ -376,6 +389,9 @@ end
 Allocate a capex budget to top-ranked portfolio items.
 """
 function allocate_budget(items::Vector{PortfolioItem}; capex_budget::Float64)
+    isempty(items) && throw(ArgumentError("items vector cannot be empty"))
+    capex_budget > 0.0 || throw(ArgumentError("capex_budget must be positive, got $capex_budget"))
+
     ranked = portfolio_scores(items)
     chosen = Symbol[]
     remaining = capex_budget
