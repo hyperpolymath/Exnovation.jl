@@ -86,6 +86,12 @@ using Exnovation
     actions = debiasing_actions(barriers)
     @test !isempty(actions)
 
+    # Test Political barrier debiasing
+    political_barriers = [Barrier(Political, 0.5, "Stakeholder resistance")]
+    political_actions = debiasing_actions(political_barriers)
+    @test length(political_actions) >= 1
+    @test any(contains(a, "stakeholder") || contains(a, "Stakeholder") for a in political_actions)
+
     criteria = IntelligentFailureCriteria(0.9, 0.7, 0.8, 0.9, 0.8, 0.7, 0.8)
     failure = FailureAssessment(Intelligent, criteria, 0.6, 0.7)
     fsummary = failure_summary(failure)

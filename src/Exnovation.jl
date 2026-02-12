@@ -243,6 +243,9 @@ function debiasing_actions(barriers::Vector{Barrier})
             push!(actions, "Replace routines with default alternatives and training.")
         elseif barrier.kind == Structural
             push!(actions, "Adjust incentives and ownership so legacy metrics no longer dominate.")
+        elseif barrier.kind == Political
+            push!(actions, "Map stakeholder influence and build coalition support for the transition.")
+            push!(actions, "Communicate reputational benefits and de-risk through staged rollout.")
         end
     end
     unique(actions)
