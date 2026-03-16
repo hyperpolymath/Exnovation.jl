@@ -194,10 +194,10 @@ println("PASS: index.md updated with real content")
 
 **Problem:** Five files use `SPDX-License-Identifier: PMPL-1.0-or-later`. Per
 CLAUDE.md license policy: "NEVER use AGPL-3.0 (old license, replaced by PMPL-1.0-or-later)".
-The `docs/CITATIONS.adoc` also says `license = {AGPL-3.0-or-later}` in the BibTeX block.
+The `docs/CITATIONS.adoc` also says `license = {PMPL-1.0-or-later}` in the BibTeX block.
 
 **What to do:**
-1. In each of the 5 files listed, replace `AGPL-3.0-or-later` with `PMPL-1.0-or-later`.
+1. In each of the 5 files listed, replace `PMPL-1.0-or-later` with `PMPL-1.0-or-later`.
 2. In `docs/CITATIONS.adoc`, also fix the project name from `rsr-template-repo` to
    `Exnovation.jl`, the author from `Polymath, Hyper` to `Jewell, Jonathan D.A.`, the
    year to `2026`, and the URL to `https://github.com/hyperpolymath/Exnovation.jl`.
@@ -384,7 +384,7 @@ non-existent `CITATION.cff` and `codemeta.json` files.
    `Hyper Polymath` with `Jonathan D.A. Jewell`.
 3. Replace year `2025` with `2026`.
 4. Replace the URL with `https://github.com/hyperpolymath/Exnovation.jl`.
-5. Fix the license from `AGPL-3.0-or-later` to `PMPL-1.0-or-later` (if not done in Task 5).
+5. Fix the license from `PMPL-1.0-or-later` to `PMPL-1.0-or-later` (if not done in Task 5).
 6. Remove the "See Also" section referencing `CITATION.cff` and `codemeta.json` (they
    do not exist), or create those files.
 
