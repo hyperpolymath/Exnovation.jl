@@ -1,0 +1,26 @@
+# SPDX-License-Identifier: PMPL-1.0-or-later
+# Clade declaration — part of the gv-clade-index registry
+# See: https://github.com/hyperpolymath/gv-clade-index
+
+[identity]
+uuid = "349a68f3-f163-5096-b2ee-bf114326014a"
+primary-forge = "github"
+primary-owner = "hyperpolymath"
+canonical-name = "Exnovation.jl"
+prefixed-name = "dx-Exnovation.jl"
+
+[clade]
+primary = "dx"
+secondary = []
+assigned = "2026-03-16"
+rationale = ""
+
+[forges]
+github = "hyperpolymath/Exnovation.jl"
+gitlab = "hyperpolymath/Exnovation.jl"
+bitbucket = "hyperpolymath/Exnovation.jl"
+
+[lineage]
+type = "standalone"
+parent = "Julia package — technology phase-out analysis"
+born = "2026-03-16"
