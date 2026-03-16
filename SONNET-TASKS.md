@@ -257,37 +257,37 @@ if [ "$count" -eq 0 ]; then echo "PASS: no template placeholders remain in code"
 - `/var/mnt/eclipse/repos/Exnovation.jl/ROADMAP.adoc`
 - `/var/mnt/eclipse/repos/Exnovation.jl/RSR_OUTLINE.adoc`
 
-**Problem:** These files are raw RSR template copies with `{{FORGE}}`, `{{OWNER}}`,
-`{{REPO}}`, `{{PROJECT_NAME}}`, `{{SECURITY_EMAIL}}`, `{{CONDUCT_EMAIL}}`,
-`{{CONDUCT_TEAM}}`, `{{RESPONSE_TIME}}`, `{{CURRENT_YEAR}}`, `{{PGP_FINGERPRINT}}`,
-`{{PGP_KEY_URL}}`, `{{WEBSITE}}`, `{{MAIN_BRANCH}}` placeholders.
+**Problem:** These files are raw RSR template copies with `github.com`, `hyperpolymath`,
+`Exnovation.jl`, `Exnovation.Jl`, `6759885+hyperpolymath@users.noreply.github.com`, `{{CONDUCT_EMAIL}}`,
+`{{CONDUCT_TEAM}}`, `{{RESPONSE_TIME}}`, `2026`, `[PGP fingerprint not set]`,
+`{{PGP_KEY_URL}}`, `{{WEBSITE}}`, `main` placeholders.
 
 `ROADMAP.adoc` is also a generic template that conflicts with the real `ROADMAP.md`.
 
 **What to do:**
 1. In `CONTRIBUTING.md`, replace:
-   - `{{FORGE}}` with `github.com`
-   - `{{OWNER}}` with `hyperpolymath`
-   - `{{REPO}}` with `Exnovation.jl`
-   - `{{MAIN_BRANCH}}` with `main`
+   - `github.com` with `github.com`
+   - `hyperpolymath` with `hyperpolymath`
+   - `Exnovation.jl` with `Exnovation.jl`
+   - `main` with `main`
 2. In `CODE_OF_CONDUCT.md`, replace:
-   - `{{PROJECT_NAME}}` with `Exnovation.jl`
-   - `{{OWNER}}` with `hyperpolymath`
-   - `{{REPO}}` with `Exnovation.jl`
+   - `Exnovation.Jl` with `Exnovation.jl`
+   - `hyperpolymath` with `hyperpolymath`
+   - `Exnovation.jl` with `Exnovation.jl`
    - `{{CONDUCT_EMAIL}}` with `jonathan.jewell@open.ac.uk`
    - `{{CONDUCT_TEAM}}` with `Exnovation.jl Maintainers`
    - `{{RESPONSE_TIME}}` with `72 hours`
-   - `{{CURRENT_YEAR}}` with `2026`
-   - `{{FORGE}}` with `github.com`
+   - `2026` with `2026`
+   - `github.com` with `github.com`
 3. In `SECURITY.md`, replace:
-   - `{{PROJECT_NAME}}` with `Exnovation.jl`
-   - `{{OWNER}}` with `hyperpolymath`
-   - `{{REPO}}` with `Exnovation.jl`
-   - `{{SECURITY_EMAIL}}` with `jonathan.jewell@open.ac.uk`
-   - `{{PGP_FINGERPRINT}}` with `(not yet configured)`
+   - `Exnovation.Jl` with `Exnovation.jl`
+   - `hyperpolymath` with `hyperpolymath`
+   - `Exnovation.jl` with `Exnovation.jl`
+   - `6759885+hyperpolymath@users.noreply.github.com` with `jonathan.jewell@open.ac.uk`
+   - `[PGP fingerprint not set]` with `(not yet configured)`
    - `{{PGP_KEY_URL}}` with `(not yet configured)`
    - `{{WEBSITE}}` with `https://github.com/hyperpolymath/Exnovation.jl`
-   - `{{CURRENT_YEAR}}` with `2026`
+   - `2026` with `2026`
 4. Delete `ROADMAP.adoc` (the real roadmap is `ROADMAP.md`).
 5. In `RSR_OUTLINE.adoc`, replace the title on line 1 from `= RSR Template Repository`
    to `= Exnovation.jl RSR Outline`. Replace the SPDX identifier on line 212 from
