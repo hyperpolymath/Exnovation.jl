@@ -274,7 +274,7 @@ if [ "$count" -eq 0 ]; then echo "PASS: no template placeholders remain in code"
    - `Exnovation.Jl` with `Exnovation.jl`
    - `hyperpolymath` with `hyperpolymath`
    - `Exnovation.jl` with `Exnovation.jl`
-   - `{{CONDUCT_EMAIL}}` with `jonathan.jewell@open.ac.uk`
+   - `{{CONDUCT_EMAIL}}` with `j.d.a.jewell@open.ac.uk`
    - `{{CONDUCT_TEAM}}` with `Exnovation.jl Maintainers`
    - `{{RESPONSE_TIME}}` with `72 hours`
    - `2026` with `2026`
@@ -283,7 +283,7 @@ if [ "$count" -eq 0 ]; then echo "PASS: no template placeholders remain in code"
    - `Exnovation.Jl` with `Exnovation.jl`
    - `hyperpolymath` with `hyperpolymath`
    - `Exnovation.jl` with `Exnovation.jl`
-   - `6759885+hyperpolymath@users.noreply.github.com` with `jonathan.jewell@open.ac.uk`
+   - `6759885+hyperpolymath@users.noreply.github.com` with `j.d.a.jewell@open.ac.uk`
    - `[PGP fingerprint not set]` with `(not yet configured)`
    - `{{PGP_KEY_URL}}` with `(not yet configured)`
    - `{{WEBSITE}}` with `https://github.com/hyperpolymath/Exnovation.jl`
