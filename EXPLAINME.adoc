@@ -1,32 +1,140 @@
 // SPDX-License-Identifier: PMPL-1.0-or-later
 = Exnovation.jl — Show Me The Receipts
+Jonathan D.A. Jewell <j.d.a.jewell@open.ac.uk>
 :toc:
+:toclevels: 3
 :icons: font
 
-The README makes claims. This file backs them up.
+The README makes claims. This file backs them up with specific code locations,
+honest caveats, and enough trace information for an external reviewer to navigate
+the codebase cold.
 
-[quote, README]
+== Claim 1: Decision modeling framework for systematic phase-out of outdated technologies
+
+[quote, README — What is Exnovation.jl?]
 ____
-A Julia framework for modeling **exnovation decisions**—phasing out legacy practices to enable innovation.
+Exnovation.jl is a decision modeling framework designed to help organizations and
+researchers systematically analyze, plan, and execute the phase-out of outdated
+technologies, processes, or practices.
 ____
 
-== Technology Choices
+*How it works:* The core domain model lives in `src/Exnovation.jl`. An
+`ExnovationItem` names the legacy practice under evaluation (`id::Symbol`,
+`description::String`, `context::String`). An `ExnovationAssessment` bundles the
+item with a list of `Driver` structs (forces pushing for phase-out, each with a
+`weight` and `description`) and `Barrier` structs (forces resisting phase-out,
+typed by category: `Cognitive`, `Behavioral`, `Institutional`, or `Technical`).
 
-[cols="1,2"]
-|===
-| Technology | Learn More
+`exnovation_score(assessment)` computes three sub-scores:
 
-| **Julia** | https://julialang.org
-|===
+- `driver_score` — weighted mean of driver weights
+- `barrier_score` — weighted mean of barrier weights
+- `criteria_score` — dot product of a `DecisionCriteria` struct (four weights:
+  economic, environmental, social, technical) against the assessment's
+  corresponding float fields
+
+It also calculates `sunk_cost_bias` as `sunk_cost / (sunk_cost + potential_value)`,
+a measure of how much prior investment is distorting the decision.
+
+`recommendation(assessment)` maps the resulting scores to one of three atoms:
+`:exnovate`, `:pilot`, or `:defer`.
+
+*Honest caveat:* The `@exnovate` macro and `simulate/2` function shown in the README
+Quick Start are illustrative. The current source does not implement them — the module
+contains `ExnovationItem`, the assessment/scoring pipeline, and the JSI sub-module.
+The macro DSL is aspirational scaffolding.
+
+== Claim 2: Formal validation ensuring strategies meet organisational constraints
+
+[quote, README — Formal Validation section]
+____
+Ensure that exnovation strategies meet organizational constraints and regulatory
+requirements.
+____
+
+*How it works:* Formal validation is partially grounded by the `JSI` sub-module
+(`src/JSI.jl`). `JustSustainabilityIndex` holds three scores (equity, environment,
+economy, each 0.0–1.0). `evaluate_jsi(jsi)` returns a weighted aggregate:
+`0.4 * equity + 0.4 * environment + 0.2 * economy` — a deliberate weighting that
+prioritises justice and environment over pure economic viability, based on Agyeman's
+framework.
+
+A high JSI score provides a quantitative basis for justifying exnovation against
+unsustainable alternatives. The `DecisionCriteria` struct in the main module
+provides a second axis of formal weighting.
+
+*Honest caveat:* The `@prove` macro shown in the README Formal Validation example
+is not implemented. There is no integration with a proof assistant or SMT solver
+in the current source. The "formal guarantees" language in the README describes
+an aspirational future state, not the current scoring pipeline.
+
+== How It Is Checked
+
+Tests live in `test/runtests.jl`. Coverage includes:
+
+- Constructing `ExnovationItem`, `Driver`, `Barrier`, and `DecisionCriteria`
+- `exnovation_score` returns positive `driver_score`, `barrier_score`,
+  `criteria_score`, and `sunk_cost_bias` for a standard assessment
+- `recommendation` returns a member of `{:exnovate, :pilot, :defer}`
+- Edge case: zero drivers produces `driver_score == 0.0`
+- Edge case: zero barriers produces `barrier_score == 0.0`
+- Edge case: high sunk cost produces elevated `sunk_cost_bias`
+- JSI construction and `evaluate_jsi` weighted aggregate arithmetic
 
 == File Map
 
-[cols="1,2"]
+[cols="2,4"]
 |===
 | Path | What's There
 
-| `src/` | Source code
-| `test(s)/` | Test suite
+| `src/Exnovation.jl`
+| Main module. Defines `ExnovationItem`, `Driver`, `Barrier` (with `BarrierType`
+  enum), `DecisionCriteria`, `ExnovationAssessment`. Implements `exnovation_score`
+  and `recommendation`. Re-exports `JustSustainabilityIndex` and `evaluate_jsi`
+  from the JSI sub-module.
+
+| `src/JSI.jl`
+| `JSI` sub-module. `JustSustainabilityIndex` struct (equity, environment, economy
+  scores). `evaluate_jsi` computes the 0.4/0.4/0.2 weighted aggregate. Based on
+  Agyeman's Just Sustainability framework.
+
+| `test/runtests.jl`
+| Full test suite. Tests score arithmetic, edge cases (empty drivers/barriers,
+  maximum sunk costs), recommendation mapping, and JSI evaluation.
+
+| `Project.toml`
+| Package identity and dependencies. No external deps beyond stdlib.
+
+| `LICENSE` / `LICENSES/`
+| PMPL-1.0-or-later full text.
+|===
+
+== Dogfooded Across The Account
+
+[cols="2,4"]
+|===
+| Repo | How Exnovation (or this domain) appears
+
+| `Hyperpolymath.jl`
+| Listed under "Organizing & Action" in the umbrella metapackage
+  (`using Exnovation` in `src/Hyperpolymath.jl`).
+
+| `developer-ecosystem/julia-ecosystem/`
+| All standalone `.jl` packages tracked as subdir packages; Exnovation.jl is
+  part of the social-science/policy layer of the Julia ecosystem collection.
+
+| `standards`
+| The exnovation concept is directly applied to the account's own technology
+  lifecycle policy — TypeScript is under active exnovation in favour of ReScript,
+  Node.js in favour of Deno. This package is the analytical tool for that process.
+
+| `nextgen-languages`
+| Language retirement decisions (e.g. ATS2 deprecated in favour of Idris2) are
+  the kind of exnovation this framework is designed to model.
+
+| `developer-ecosystem`
+| Language policy migration documents reference exnovation reasoning (banning
+  Python, Go, TypeScript) — the structured decision model this package formalises.
 |===
 
 == Questions?
