@@ -176,3 +176,6 @@ using Exnovation
     multi_allocation = allocate_budget([item, item2]; capex_budget=250.0)
     @test length(multi_allocation) <= 2
 end
+
+include("e2e_test.jl")
+include("property_test.jl")
