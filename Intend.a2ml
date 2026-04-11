@@ -1,0 +1,14 @@
+// Intend.a2ml for Exnovation.jl
+// SPDX-License-Identifier: PMPL-1.0-or-later
+// Generated: 2026-04-08T19:52:04+01:00
+
+Intend {
+    name: "Exnovation.jl"
+    version: "1.0.0"
+    description: "Intend contractile for Exnovation.jl"
+    
+    // Basic Intend configuration
+    enabled: true
+    
+    // Repository-specific settings will be added here
+}

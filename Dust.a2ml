@@ -1,0 +1,14 @@
+// Dust.a2ml for Exnovation.jl
+// SPDX-License-Identifier: PMPL-1.0-or-later
+// Generated: 2026-04-08T19:52:04+01:00
+
+Dust {
+    name: "Exnovation.jl"
+    version: "1.0.0"
+    description: "Dust contractile for Exnovation.jl"
+    
+    // Basic Dust configuration
+    enabled: true
+    
+    // Repository-specific settings will be added here
+}
