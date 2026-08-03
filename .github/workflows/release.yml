@@ -150,7 +150,7 @@ jobs:
           draft: false
           prerelease: false
 
-  - name: K9-SVC Validation
-    run: |
-      echo "K9-SVC validation"
-      [ -d .machine_readable/contractiles ] && echo "Contractiles present" || echo "No contractiles"
+      - name: K9-SVC Validation
+        run: |
+          echo "K9-SVC validation"
+          [ -d .machine_readable/contractiles ] && echo "Contractiles present" || echo "No contractiles"
