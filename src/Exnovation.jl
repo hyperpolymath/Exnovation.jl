@@ -7,7 +7,7 @@ include("JSI.jl")
 using .JSI
 
 # Re-export core types
-export JustSustainabilityIndex, evaluate_jsi
+export JustSustainabilityIndex, evaluate_jsi, ExnovationItem
 
 """
     ExnovationItem
