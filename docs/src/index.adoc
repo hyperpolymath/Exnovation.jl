@@ -1,23 +1,22 @@
-<!--
-SPDX-License-Identifier: CC-BY-SA-4.0
-Copyright (c) Jonathan D.A. Jewell <j.d.a.jewell@open.ac.uk>
--->
-# Exnovation.jl
+== Exnovation.jl
 
-**Exnovation.jl** is a decision-support library for exnovation: the strategic retirement
-of legacy systems. It helps organizations assess whether to exnovate (retire), pilot, or
-keep existing infrastructure using quantitative drivers, barriers, and impact models.
+*Exnovation.jl* is a decision-support library for exnovation: the
+strategic retirement of legacy systems. It helps organizations assess
+whether to exnovate (retire), pilot, or keep existing infrastructure
+using quantitative drivers, barriers, and impact models.
 
-## Installation
+=== Installation
 
-```julia
+[source,julia]
+----
 using Pkg
 Pkg.add(url="https://github.com/hyperpolymath/Exnovation.jl")
-```
+----
 
-## Quick Start
+=== Quick Start
 
-```julia
+[source,julia]
+----
 using Exnovation
 
 item = ExnovationItem(:LegacyCRM, "Legacy CRM system", "Sales operations")
@@ -50,15 +49,16 @@ assessment = ExnovationAssessment(
 score = exnovation_score(assessment)
 println(score)
 println(recommendation(assessment))
-```
+----
 
-## Examples
+=== Examples
 
 The repository includes two complete examples:
 
-- **`examples/01_basic_usage.jl`**: Basic exnovation assessment workflow
-- **`examples/02_portfolio_management.jl`**: Portfolio prioritization and budgeting
+* *`+examples/01_basic_usage.jl+`*: Basic exnovation assessment workflow
+* *`+examples/02_portfolio_management.jl+`*: Portfolio prioritization
+and budgeting
 
-## API Reference
+=== API Reference
 
-See [API](api.md) for complete reference documentation.
+See link:api.md[API] for complete reference documentation.
