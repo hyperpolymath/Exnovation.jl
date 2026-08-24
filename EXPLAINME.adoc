@@ -126,7 +126,7 @@ Tests live in `test/runtests.jl`. Coverage includes:
 
 | `standards`
 | The exnovation concept is directly applied to the account's own technology
-  lifecycle policy — TypeScript is under active exnovation in favour of ReScript,
+  lifecycle policy — TypeScript is under active exnovation in favour of AffineScript,
   Node.js in favour of Deno. This package is the analytical tool for that process.
 
 | `nextgen-languages`
