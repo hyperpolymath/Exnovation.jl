@@ -1,14 +1,11 @@
-<!--
-SPDX-License-Identifier: CC-BY-SA-4.0
-Copyright (c) Jonathan D.A. Jewell <j.d.a.jewell@open.ac.uk>
--->
-# API Reference
+== API Reference
 
 This page documents all exported types and functions in Exnovation.jl.
 
-## Types
+=== Types
 
-```@docs
+[source,@docs]
+----
 ExnovationItem
 Driver
 Barrier
@@ -22,11 +19,12 @@ FailureSummary
 ImpactModel
 PortfolioItem
 StageGate
-```
+----
 
-## Functions
+=== Functions
 
-```@docs
+[source,@docs]
+----
 assess_exnovation
 normalize_score
 recommendation
@@ -38,15 +36,17 @@ portfolio_scores
 allocate_budget
 run_stage_gates
 lifecycle_fit
-```
+----
 
-## Enums
+=== Enums
 
-- `BarrierType`: `Cognitive`, `Emotional`, `Behavioral`, `Structural`, `Political`
-- `LegacyType`: `Sustaining`, `Disruptive`
-- `FailureType`: `Intelligent`, `Preventable`, `Complex`
+* `+BarrierType+`: `+Cognitive+`, `+Emotional+`, `+Behavioral+`,
+`+Structural+`, `+Political+`
+* `+LegacyType+`: `+Sustaining+`, `+Disruptive+`
+* `+FailureType+`: `+Intelligent+`, `+Preventable+`, `+Complex+`
 
-## Index
+=== Index
 
-```@index
-```
+[source,@index]
+----
+----
