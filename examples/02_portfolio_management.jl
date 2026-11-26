@@ -165,7 +165,7 @@ println("Selected projects:")
 total_allocated = 0.0
 for name in selected
     item = first(filter(p -> p.case.assessment.item.name == name, portfolio))
-    total_allocated += item.impact.capex
+    global total_allocated += item.impact.capex
     println("  - $(name): \$$(Int(item.impact.capex / 1_000))K")
 end
 println("Total allocated: \$$(round(total_allocated / 1_000_000, digits=2))M")
